@@ -1,13 +1,13 @@
 import datetime
 import logging
 import os
-
 import yagmail
 import feedparser
 
 logging.basicConfig(level=logging.INFO,
                     format='%(asctime)s %(name)s %(levelname)-4s : %(message)s',
                     filename='main.log',filemode='w')
+
 
 def start():
     scraper = Scraper()
@@ -29,7 +29,6 @@ def send_email(user_email):
     else:
         yag.send(to=receiver, subject="Odins Python Newsletter", contents=body, attachments=filename)
         logging.info("Email Sent to " + receiver)
-
 
 
 def get_info():
@@ -83,6 +82,7 @@ class Scraper:
             for x in combined:
                 file.write(x[0] + '\n' + x[1] + '\n\n')
         logging.info('File Created')
+
 
 if __name__ == '__main__':
     start()
