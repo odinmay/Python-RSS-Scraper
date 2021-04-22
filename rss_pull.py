@@ -1,6 +1,7 @@
 import datetime
 import logging
 import os
+import sys
 import yagmail
 import feedparser
 
@@ -9,11 +10,17 @@ logging.basicConfig(level=logging.INFO,
                     filename='main.log',filemode='w')
 
 
+#python filename emails.txt
+
 def start():
     scraper = Scraper()
     scraper.scrub()
     scraper.build_file()
-    get_info()
+    try:
+        argument = sys.argv[1]
+        get_info(argument)
+    except:
+        send_email("mbrad664@gmail.com")
 
 
 def send_email(user_email):
@@ -31,21 +38,17 @@ def send_email(user_email):
         logging.info("Email Sent to " + receiver)
 
 
-def get_info():
-    email = input("Please Enter the Email(s) You Want to Send RSS or Enter 100 for default: ")
-    input_type = email[-3:]
-    #print(input_type) remove comment for test
+def get_info(args):
+    input_type = args[-3:]
     if input_type == "com":
-        send_email(email)
+        send_email(args)
     elif input_type == "txt":
-        while not os.path.isfile(email):
-            email = input("Whoops! No such file! Please enter the name of the file you'd like to use.")
-        my_file = open(email, "r")
+        while not os.path.isfile(args):
+            args = input("Whoops! No such file! Please enter the name of the file you'd like to use.")
+        my_file = open(args, "r")
         content = my_file.read()
         content_list = content.split(",")
         send_email(content_list)
-    elif input_type == "100":
-        send_email("mbrad664@gmail.com")
     else:
         logging.info("Error Obtaining Input")
 
