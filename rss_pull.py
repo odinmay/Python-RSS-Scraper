@@ -5,6 +5,9 @@ import sys
 import yagmail
 import feedparser
 
+#CHANGE THIS
+default_email = 'odinmerlinmay@gmail.com'
+
 logging.basicConfig(level=logging.INFO,
                     format='%(asctime)s %(name)s %(levelname)-4s : %(message)s',
                     filename='main.log',filemode='w')
@@ -20,7 +23,7 @@ def start():
         argument = sys.argv[1]
         get_info(argument)
     except:
-        send_email("mbrad664@gmail.com")
+        send_email(default_email)
 
 
 def send_email(user_email):
@@ -28,7 +31,7 @@ def send_email(user_email):
     receiver=user_email
     body = "News | Blog Posts | Articles on Python \n brought to you by Odin May"
     filename = str(datetime.date.today()) + '.txt'
-    yag=yagmail.SMTP('mbrad664@gmail.com')
+    yag=yagmail.SMTP(default_email)
     if(isinstance(receiver,list)):
         for emails in receiver:
             yag.send(to=emails,subject="Odins Python Newsletter",contents=body,attachments=filename)
